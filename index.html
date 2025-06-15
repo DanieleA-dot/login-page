@@ -4,7 +4,7 @@
   <title>Accesso Riservato</title>
 </head>
 <body>
-  <h2>Area del Personale - Login</h2>
+  <h2>Area del Personale - Accesso</h2>
   <p>Benvenuto nell'area riservata del personale. Inserisci le tue credenziali per accedere.</p>
   <form onsubmit="return checkLogin()">
     <input type="text" id="username" placeholder="Nome Utente"><br><br>
@@ -19,7 +19,7 @@
       const pass = document.getElementById("password").value;
 
       if (user === "nrpvigilfuoco" && pass === "vigilfuoconemesi") {
-        window.location.href = "https://sites.google.com/view/areapersonale-nemesirp-vvf/home-page";
+        window.location.href = "https://sites.google.com/view/vigilfuocoifrp/area-del-personale/sezione-del-personale";
         return false;
       } else {
         document.getElementById("error").innerText = "Accesso negato";
