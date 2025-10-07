@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Accesso Riservato</title>
+  <title>Area del Personale - Accesso</title>
 </head>
 <body>
   <h2>Area del Personale - Accesso</h2>
-  <p>Benvenuto nell'area riservata del personale. Inserisci le tue credenziali per accedere.</p>
+  <h3>Benvenuto nell'area riservata del personale. Inserisci le tue credenziali per accedere.</h3>
+
+  <style>
+  body {
+    background-image: url('https://imgur.com/PMJuU0Q.png'); /* Cambia con il tuo link */
+    background-size: cover;       /* Adatta l'immagine a tutta la pagina */
+    background-repeat: no-repeat; /* Evita che si ripeta */
+    background-position: low;  /* Centra l'immagine */
+  }
+</style>
+
+
   <form onsubmit="return checkLogin()">
     <input type="text" id="username" placeholder="Nome Utente"><br><br>
     <input type="password" id="password" placeholder="Password"><br><br>
