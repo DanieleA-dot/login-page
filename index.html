@@ -9,13 +9,12 @@
 
   <style>
   body {
-    background-image: url('https://imgur.com/PMJuU0Q.png'); /* Cambia con il tuo link */
-    background-size: cover;       /* Adatta l'immagine a tutta la pagina */
-    background-repeat: no-repeat; /* Evita che si ripeta */
-    background-position: low;  /* Centra l'immagine */
+    background-image: url('https://imgur.com/PMJuU0Q.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: low;
   }
-</style>
-
+  </style>
 
   <form onsubmit="return checkLogin()">
     <input type="text" id="username" placeholder="Nome Utente"><br><br>
@@ -25,19 +24,43 @@
   <p id="error" style="color:red;"></p>
 
   <script>
-    function checkLogin() {
-      const user = document.getElementById("username").value;
-      const pass = document.getElementById("password").value;
+    const users = [
+      {
+        username: "Amministratore.NFRP",
+        password: "Amministratore.NFRP",
+        url: "https://sites.google.com/view/vigilfuoconfrp/area-del-personale/sezione-del-personale"
+      },
+      {
+        username: "Rossi.Lorenzo",
+        password: "281403",
+        url: "https://sites.google.com/view/vigilfuoconfrp/area-del-personale/sezione-del-personale"
+      },
+    ];
 
-      if (user === "nrpvigilfuoco" && pass === "vigilfuoconemesi") {
-        window.location.href = "https://sites.google.com/view/vigilfuoconfrp/area-del-personale/sezione-del-personale";
+    // contatore tentativi falliti
+    let failedAttempts = 0;
+
+    function checkLogin() {
+      const user = document.getElementById("username").value.trim();
+      const pass = document.getElementById("password").value;
+      const errorEl = document.getElementById("error");
+
+      const match = users.find(u => u.username === user && u.password === pass);
+
+      if (match) {
+        failedAttempts = 0; // reset su successo
+        window.location.href = match.url;
         return false;
       } else {
-        document.getElementById("error").innerText = "Accesso negato";
+        failedAttempts++;
+        let msg = "Accesso negato - Credenziali errate.";
+        if (failedAttempts >= 2) {
+          msg += "<br><span style='font-weight:600'>Hai sbagliato 2 volte le credenziali. Attezione, segnaleremo eventuali abusi alle Forze dell'Ordine.</span>";
+        }
+        errorEl.innerHTML = msg;
         return false;
       }
     }
   </script>
 </body>
 </html>
-
