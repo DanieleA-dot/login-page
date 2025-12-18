@@ -1,27 +1,133 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
+  <meta charset="UTF-8">
   <title>Area del Personale - Accesso</title>
-</head>
-<body>
-  <h2>Area del Personale - Accesso</h2>
-  <h3>Benvenuto nell'area riservata del personale. Inserisci le tue credenziali per accedere.</h3>
 
   <style>
-  body {
-    background-image: url('https://imgur.com/PMJuU0Q.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: low;
-  }
-  </style>
+    body {
+      background-image: url('https://imgur.com/PMJuU0Q.png');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
 
-  <form onsubmit="return checkLogin()">
-    <input type="text" id="username" placeholder="Nome Utente"><br><br>
-    <input type="password" id="password" placeholder="Password"><br><br>
-    <button type="submit">Accedi</button>
-  </form>
-  <p id="error" style="color:red;"></p>
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 60px; /* abbassa tutto */
+    }
+
+    .logo {
+      width: 200px;
+      height: auto;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.4));
+    }
+
+    .login-box {
+      background: rgba(255, 255, 255, 0.92);
+      padding: 30px 40px;
+      border-radius: 14px;
+      text-align: center;
+      width: 360px;
+
+      box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.45),
+        0 5px 15px rgba(0, 0, 0, 0.25),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+    }
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    h3 {
+      font-weight: normal;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    label {
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      background-color: #b30000;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #8f0000;
+    }
+
+    #error {
+      margin-top: 15px;
+      color: red;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <!-- LOGO CNVVF -->
+    <img
+      src="https://imgur.com/MfW4lTO.png"
+      alt="Logo CNVVF"
+      class="logo"
+    >
+
+    <div class="login-box">
+      <h2>Area del Personale - Accesso</h2>
+      <h3>
+        Benvenuto nell'area riservata del personale.<br>
+        Inserisci le tue credenziali per accedere.
+      </h3>
+
+      <form onsubmit="return checkLogin()">
+        <input type="text" id="username" placeholder="Nome Utente" required>
+        <input type="password" id="password" placeholder="Password" required>
+
+        <!-- Checkbox Ricorda le credenziali -->
+        <label>
+          <input type="checkbox" id="rememberMe">
+          Ricorda la password
+        </label>
+
+        <button type="submit">Accedi</button>
+      </form>
+
+      <p id="error"></p>
+    </div>
+  </div>
 
   <script>
     const users = [
@@ -31,14 +137,30 @@
         url: "https://sites.google.com/view/vigilfuoconfrp/area-del-personale/sezione-del-personale"
       },
       {
+        username: "Debiase.Gregorio",
+        password: "192221",
+        url: "https://sites.google.com/view/vigilfuoconfrp/area-del-personale/sezione-del-personale"
+      },
+	  {
         username: "Rossi.Lorenzo",
         password: "281403",
         url: "https://sites.google.com/view/vigilfuoconfrp/area-del-personale/sezione-del-personale"
       },
     ];
 
-    // contatore tentativi falliti
     let failedAttempts = 0;
+
+    // Carica credenziali salvate
+    window.onload = function () {
+      const savedUser = localStorage.getItem("savedUsername");
+      const savedPass = localStorage.getItem("savedPassword");
+
+      if (savedUser && savedPass) {
+        document.getElementById("username").value = savedUser;
+        document.getElementById("password").value = savedPass;
+        document.getElementById("rememberMe").checked = true;
+      }
+    };
 
     function checkLogin() {
       const user = document.getElementById("username").value.trim();
@@ -48,19 +170,31 @@
       const match = users.find(u => u.username === user && u.password === pass);
 
       if (match) {
-        failedAttempts = 0; // reset su successo
+        failedAttempts = 0;
+
+        // SALVA O CANCELLA LE CREDENZIALI
+        const remember = document.getElementById("rememberMe").checked;
+        if (remember) {
+          localStorage.setItem("savedUsername", user);
+          localStorage.setItem("savedPassword", pass);
+        } else {
+          localStorage.removeItem("savedUsername");
+          localStorage.removeItem("savedPassword");
+        }
+
         window.location.href = match.url;
         return false;
       } else {
         failedAttempts++;
         let msg = "Accesso negato - Credenziali errate.";
         if (failedAttempts >= 2) {
-          msg += "<br><span style='font-weight:600'>Hai sbagliato 2 volte le credenziali. Attezione, segnaleremo eventuali abusi alle Forze dell'Ordine.</span>";
+          msg += "<br><strong>Hai sbagliato 2 volte le credenziali. Attenzione: eventuali abusi saranno segnalati alle Forze dell'Ordine.</strong>";
         }
         errorEl.innerHTML = msg;
         return false;
       }
     }
   </script>
+
 </body>
 </html>
